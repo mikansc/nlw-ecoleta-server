@@ -1,0 +1,59 @@
+// Rota: endereço completo da requisição
+// Recurso: qual entidade estamos acessando do sistema
+
+// GET: buscar uma ou mais informações do backend
+// POST: criar uma nova informação no backend
+// PUT: atualizar uma informação existente no backend
+// DELETE: remover uma informação do backend
+
+// POST http://localhost:5500/users = Criar no recurso users (criar um usuario)
+// GET http://localhost:5500/users = Listar no recurso users (listar todos usuarios)
+// GET http://localhost:5500/users/5 = Listar no recurso users (listar usuario com ID 5)
+
+// Req Params (request params): parametros que vem na rota e identificam um recurso
+// Query Params: parametros que são opcionais (filtragem, paginação)
+// Req Body (request body): parametros para criação e atualização de informações
+
+// USANDO O Knex
+// SELECT * FROM users WHERE name = 'Diego' (forma tradicional de requisição SQL)
+// knex('users).where('name', 'Diego').select('*') (forma knex)
+
+// Sobre tabelas
+
+// ENTIDADES DA APLICAÇÃO
+// points - pontos de coleta
+// // image
+// // name
+// // email
+// // whatsapp
+// // latitude
+// // longitude
+// // city
+// // UF
+
+// items - itens para coleta
+// // image
+// // title
+
+// Relação "muitos para muitos" (N-N) requer uma tabela Pivot
+// point_itens - tabela Pivot - Relacionamento dos itens que um ponto coleta
+// // point_ID ID = ponto de coleta
+// // item_ID = ID item
+
+// Migrations = histórico do banco de dados
+// Arquivo que diz o que precisa ser criado no banco de dados quando o soft for atualizado
+
+// create table points
+// create table users
+
+// comando a executar após configuração do knex: npx knex migrate:latest --knexfile knexfile.ts migrate:latest
+
+// Cadastro de pontos de coleta
+// Listar os itens de coleta
+// listar pontos (filtro por estado/cidade/items)
+// listar um ponto de coleta específico
+
+PESQUISAR
+
+// Service Pattern
+// Repository Pattern (data mapper)
