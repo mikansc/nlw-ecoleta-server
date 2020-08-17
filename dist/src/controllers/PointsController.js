@@ -56,10 +56,11 @@ var PointsController = /** @class */ (function () {
     }
     PointsController.prototype.index = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, city, uf, items, parsedItems, points, serializedPoints;
+            var _a, city, uf, items, parsedItems, points, serializedPoints, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
+                        _b.trys.push([0, 2, , 3]);
                         _a = req.query, city = _a.city, uf = _a.uf, items = _a.items;
                         parsedItems = String(items)
                             .split(',')
@@ -77,6 +78,11 @@ var PointsController = /** @class */ (function () {
                             return __assign(__assign({}, point), { image_url: "http://192.168.15.4:5500/uploads/" + point.image });
                         });
                         return [2 /*return*/, res.json(serializedPoints)];
+                    case 2:
+                        error_1 = _b.sent();
+                        console.error(error_1.message);
+                        return [2 /*return*/, res.status(400).send({ error: "An error has ocurred on trying to get all points." })];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -108,17 +114,19 @@ var PointsController = /** @class */ (function () {
     };
     PointsController.prototype.create = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, name, email, whatsapp, latitude, longitude, city, uf, items, trx, point, insertedIds, point_id, pointItems;
+            var _a, name_1, email, whatsapp, latitude, longitude, city, uf, items, trx, point, insertedIds, point_id_1, pointItems, error_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _a = req.body, name = _a.name, email = _a.email, whatsapp = _a.whatsapp, latitude = _a.latitude, longitude = _a.longitude, city = _a.city, uf = _a.uf, items = _a.items;
+                        _b.trys.push([0, 5, , 6]);
+                        _a = req.body, name_1 = _a.name, email = _a.email, whatsapp = _a.whatsapp, latitude = _a.latitude, longitude = _a.longitude, city = _a.city, uf = _a.uf, items = _a.items;
                         return [4 /*yield*/, connection_1.default.transaction()];
                     case 1:
                         trx = _b.sent();
                         point = {
-                            image: req.file.filename,
-                            name: name,
+                            // image: req.file.filename,
+                            image: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80",
+                            name: name_1,
                             email: email,
                             whatsapp: whatsapp,
                             latitude: latitude,
@@ -126,17 +134,17 @@ var PointsController = /** @class */ (function () {
                             city: city,
                             uf: uf,
                         };
-                        return [4 /*yield*/, trx('points').insert(point)];
+                        return [4 /*yield*/, trx('points').insert(point).returning('id')];
                     case 2:
                         insertedIds = _b.sent();
-                        point_id = insertedIds[0];
+                        point_id_1 = insertedIds[0];
                         pointItems = items
                             .split(',')
                             .map(function (item) { return Number(item.trim()); })
                             .map(function (item_id) {
                             return {
                                 item_id: item_id,
-                                point_id: point_id,
+                                point_id: point_id_1,
                             };
                         });
                         return [4 /*yield*/, trx('point_items').insert(pointItems)];
@@ -145,7 +153,12 @@ var PointsController = /** @class */ (function () {
                         return [4 /*yield*/, trx.commit()];
                     case 4:
                         _b.sent();
-                        return [2 /*return*/, res.json(__assign({ id: point_id }, point))];
+                        return [2 /*return*/, res.json(__assign({ id: point_id_1 }, point))];
+                    case 5:
+                        error_2 = _b.sent();
+                        console.error(error_2.message);
+                        return [2 /*return*/, res.status(400).send({ error: "An error has ocurred on trying to create the point." })];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
