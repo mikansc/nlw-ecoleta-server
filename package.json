@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node dist/src/server.js",
     "dev": "ts-node-dev --transpileOnly --ignore-watch node_modules --respawn src/server.ts",
-    "knex:migrate": "knex --knexfile dist/knexfile.ts migrate:latest",
-    "knex:seed": "knex --knexfile dist/knexfile.ts seed:run",
+    "knex:migrate": "knex --knexfile dist/knexfile.js migrate:latest",
+    "knex:seed": "knex --knexfile dist/knexfile.js seed:run",
     "build": "tsc"
   },
   "keywords": [],
