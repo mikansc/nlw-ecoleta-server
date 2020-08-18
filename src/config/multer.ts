@@ -6,10 +6,19 @@ import path from "path";
 import crypto from "crypto";
 import aws from "aws-sdk";
 
+// Workaround to use with Multer-S3. The types definition of Multer doesnt have the "key" property needed to use with AWS S3.
+interface MulterFile {
+  key?: string; // Available using `S3`.
+  path: string; // Available using `DiskStorage`.
+  mimetype: string;
+  originalname: string;
+  size: number;
+}
+
 const storageTypes = {
   local: multer.diskStorage({
     destination: path.resolve(__dirname, "..", "..", "temp"),
-    filename: (req, file, callback) => {
+    filename: (req, file: MulterFile, callback) => {
       const hash = crypto.randomBytes(6).toString("hex");
       file.key = `${hash}-${file.originalname}`;
       callback(null, file.key);
